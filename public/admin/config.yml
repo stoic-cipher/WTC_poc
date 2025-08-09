@@ -1,6 +1,7 @@
+local_backend: true
 backend:
   name: github
-  repo: <your-username>/wtc-poc
+  repo: <stoic-cipher>/wtc-poc
   branch: main
   base_url: /api/decap
   auth_endpoint: auth
@@ -8,9 +9,6 @@ backend:
 media_folder: "public/uploads"
 public_folder: "/uploads"
 publish_mode: editorial_workflow
-# public/admin/config.yml
-local_backend:
-  url: http://localhost:8085/api/v1
 
 collections:
   - name: "pages"
