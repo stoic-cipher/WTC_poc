@@ -2,3 +2,8 @@ node_modules/
 dist/
 .astro/
 .idea/
+# add these too
+.DS_Store
+.env
+.env.*
+*.log
