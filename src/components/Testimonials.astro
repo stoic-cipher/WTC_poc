@@ -1,0 +1,45 @@
+---
+import { animate, stagger } from "motion";
+
+const items = [
+  {
+    quote: "Fast, clean, and finally measurable. Our calls went up within a week.",
+    author: "Clinical Director, Integrated Care Group",
+  },
+  {
+    quote: "The site feels calm and confident—patients say it lowered their anxiety.",
+    author: "Lead Therapist, Ketamine Program",
+  },
+  {
+    quote: "Page speed and clarity improved admissions handoffs across the team.",
+    author: "Operations Lead, Outpatient Clinic",
+  },
+];
+
+const title = "What clients say";
+---
+
+<section id="testimonials" class="mx-auto max-w-6xl px-6 py-16">
+  <h2 class="font-display text-3xl md:text-4xl">{title}</h2>
+  <div class="mt-8 grid gap-6 md:grid-cols-3">
+    {
+      items.map((t) => (
+        <figure class="reveal rounded-2xl bg-white/70 p-6 ring-1 ring-juniper/10 backdrop-blur">
+          <blockquote class="font-body text-sm leading-relaxed">“{t.quote}”</blockquote>
+          <figcaption class="mt-4 text-xs uppercase tracking-wider text-juniper/70">
+            {t.author}
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</section>
+
+<script type="module">
+  // gentle fade/slide on enter
+  animate(
+    ".reveal",
+    { opacity: [0, 1], transform: ["translateY(8px)", "translateY(0)"] },
+    { delay: stagger(0.08), duration: 0.5, easing: "ease-out" },
+  );
+</script>

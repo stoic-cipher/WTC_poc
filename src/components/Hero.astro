@@ -1,0 +1,36 @@
+---
+
+---
+
+<section class="bg-twc-gradient relative min-h-[70vh] overflow-hidden bg-juniper text-sand">
+  <div class="blobs" aria-hidden="true">
+    <span class="blob blob--sun" style="left:-10%; top:-10%"></span>
+    <span class="blob blob--sky" style="right:-20%; top:5%"></span>
+    <span class="blob blob--brain" style="left:10%; bottom:-20%"></span>
+  </div>
+  <div class="pointer-events-none absolute inset-0 grid place-items-center">
+    <div class="h-[80vmin] w-[80vmin] rounded-full border border-sand/20"></div>
+    <div class="h-[60vmin] w-[60vmin] rounded-full border border-sand/20"></div>
+    <div class="h-[40vmin] w-[40vmin] rounded-full border border-sand/20"></div>
+  </div>
+
+  <div class="relative mx-auto max-w-5xl px-6 py-24">
+    <h1 class="font-display text-5xl leading-tight md:text-6xl">The Wholeness Center</h1>
+    <p class="reveal mt-4 font-tagline text-sm/relaxed uppercase tracking-tracked">
+      WHOLE PERSON CARE
+    </p>
+    <p class="reveal mt-6 max-w-2xl font-body text-lg">Remember your wildness — return to self.</p>
+  </div>
+</section>
+
+<script type="module">
+  import { animate, stagger } from "motion";
+  window.addEventListener("load", () => {
+    animate(
+      "h1",
+      { opacity: [0, 1], transform: ["translateY(12px)", "translateY(0)"] },
+      { duration: 0.7, easing: "ease-out" },
+    );
+    animate(".reveal", { opacity: [0, 1] }, { delay: stagger(0.15), duration: 0.6 });
+  });
+</script>

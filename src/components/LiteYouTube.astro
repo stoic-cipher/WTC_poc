@@ -1,0 +1,31 @@
+---
+const { id, title = "Video" } = Astro.props;
+const thumb = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+---
+
+<div class="group relative aspect-video overflow-hidden rounded-2xl ring-1 ring-juniper/10">
+  <img src={thumb} alt={title} class="h-full w-full object-cover" loading="lazy" />
+  <button
+    class="absolute inset-0 grid place-items-center bg-black/30 text-white"
+    aria-label={`Play ${title}`}
+    data-yt={id}
+  >
+    ▶
+  </button>
+</div>
+
+<script type="module">
+  const btn = document.currentScript.previousElementSibling.querySelector("button");
+  btn?.addEventListener("click", () => {
+    const id = btn.dataset.yt;
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    iframe.title = btn.getAttribute("aria-label") || "YouTube video";
+    iframe.loading = "lazy";
+    iframe.allow =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    iframe.className = "absolute inset-0 h-full w-full";
+    btn.parentElement.replaceWith(iframe);
+  });
+</script>

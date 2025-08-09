@@ -1,0 +1,40 @@
+backend:
+  name: test-repo
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+publish_mode: editorial_workflow
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    folder: "content/pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Path", name: "path", widget: "string", default: "/" }
+      - { label: "Hero Text", name: "hero", widget: "string", default: "Remember your wildness —" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "services"
+    label: "Services"
+    folder: "content/services"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "title", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Icon", name: "icon", widget: "image", required: false }
+
+  - name: "settings"
+    label: "Settings"
+    files:
+      - file: "content/settings/brand.json"
+        label: "Brand"
+        name: "brand"
+        fields:
+          - { label: "Primary Color", name: "primary", widget: "string", default: "#3C4D4A" }
+          - { label: "Secondary Color", name: "secondary", widget: "string", default: "#566057" }
+          - { label: "Logo (Sand)", name: "logoSand", widget: "image", required: false }
+          - { label: "Logo (Juniper)", name: "logoJuniper", widget: "image", required: false }

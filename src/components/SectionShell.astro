@@ -1,0 +1,32 @@
+---
+const {
+  title = "",
+  intro = "",
+  minH = "min-h-[70vh]", // tweak per page if needed
+} = Astro.props;
+---
+
+<section class={`relative ${minH} bg-juniper bg-twc-gradient text-sand overflow-hidden`}>
+  <!-- floating blobs -->
+  <div class="blobs" aria-hidden="true">
+    <span class="blob blob--sun" style="left:-15%; top:-12%"></span>
+    <span class="blob blob--sky" style="right:-18%; top:0%"></span>
+    <span class="blob blob--brain" style="left:0%; bottom:-22%"></span>
+  </div>
+
+  <!-- concentric lines -->
+  <div class="pointer-events-none absolute inset-0 grid place-items-center">
+    <div class="h-[80vmin] w-[80vmin] rounded-full border border-sand/15"></div>
+    <div class="h-[60vmin] w-[60vmin] rounded-full border border-sand/15"></div>
+    <div class="h-[40vmin] w-[40vmin] rounded-full border border-sand/15"></div>
+  </div>
+
+  <!-- centered content -->
+  <div class="relative mx-auto grid max-w-6xl place-items-center px-6 py-16">
+    <div class="w-full max-w-xl">
+      {title && <h1 class="font-display text-4xl md:text-5xl">{title}</h1>}
+      {intro && <p class="mt-3 font-body text-sand/90">{intro}</p>}
+      <slot />
+    </div>
+  </div>
+</section>

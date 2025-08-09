@@ -1,0 +1,32 @@
+---
+const { label = "Stat", value = 100 } = Astro.props;
+---
+
+<div class="text-center">
+  <div class="font-display text-4xl md:text-5xl" data-target={value}>0</div>
+  <p class="mt-2 text-sm">{label}</p>
+</div>
+
+<script type="module">
+  const el = document.currentScript.previousElementSibling.querySelector("[data-target]");
+  const target = Number(el.dataset.target || 0);
+  let started = false;
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (!started && entries.some((e) => e.isIntersecting)) {
+        started = true;
+        const start = performance.now();
+        const dur = 1200;
+        const tick = (t) => {
+          const p = Math.min(1, (t - start) / dur);
+          el.textContent = Math.round(target * (0.1 + (0.9 * (1 - Math.cos(Math.PI * p))) / 2));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        io.disconnect();
+      }
+    },
+    { threshold: 0.4 },
+  );
+  io.observe(el);
+</script>

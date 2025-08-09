@@ -1,0 +1,19 @@
+---
+const { src = "/videos/demo.mp4", poster = "", controls = true } = Astro.props;
+---
+
+<video
+  class="w-full rounded-2xl ring-1 ring-juniper/10"
+  src={src}
+  poster={poster}
+  playsinline
+  controls={controls}
+  preload="metadata"
+>
+</video>
+
+<script type="module">
+  // Respect reduced motion: pause any autoplaying video
+  const v = document.currentScript.previousElementSibling;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) v?.pause?.();
+</script>

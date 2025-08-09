@@ -1,0 +1,100 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import PhotoBand from "../components/PhotoBand.astro";
+import CaseStudy from "../components/CaseStudy.astro";
+import StatCounter from "../components/StatCounter.astro";
+import CTA from "../components/CTA.astro";
+import Footer from "../components/Footer.astro";
+import Testimonials from "../components/Testimonials.astro";
+
+// Load markdown from /content/services (POC-friendly)
+const serviceFiles = await Astro.glob("../../content/services/*.md");
+const services = serviceFiles
+  .map((f) => ({
+    title: f.frontmatter.title,
+    blurb: f.frontmatter.summary,
+    order: f.frontmatter.order ?? 999,
+  }))
+  .sort((a, b) => a.order - b.order);
+---
+
+<Base
+  title="The Wholeness Center — Whole Person Care"
+  description="Remember your wildness — return to self."
+>
+  <Nav />
+  <main class="pt-24">
+    <Hero />
+
+    <!-- Responsive, optimized images come from PhotoBand (local JPEGs => AVIF/WEBP/JPEG) -->
+    <PhotoBand />
+
+    <!-- Method -->
+    <section id="method" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16">
+      <h2 class="font-display text-3xl md:text-4xl">Our Method</h2>
+      <p class="mt-4 max-w-2xl font-body">
+        Holistic and traditional modalities working together for sustainable healing.
+      </p>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((s) => (
+            <article class="rounded-xl bg-white/70 p-6 ring-1 ring-juniper/10 backdrop-blur">
+              <h3 class="font-display text-xl">{s.title}</h3>
+              <p class="mt-2 font-body text-sm">{s.blurb}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Proof stats -->
+    <section class="mx-auto max-w-6xl px-6 py-10">
+      <div class="grid grid-cols-3 gap-6 text-juniper">
+        <StatCounter value={98} label="Mobile Lighthouse score" />
+        <StatCounter value={100} label="Desktop Lighthouse score" />
+        <StatCounter value={50} label="Core Web Vitals ↑" />
+      </div>
+      <p class="sr-only">Metrics are illustrative for the proof of concept.</p>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16">
+      <h2 class="font-display text-3xl md:text-4xl">Selected Programs</h2>
+      <p class="mt-4 max-w-2xl font-body">Designed to be understandable, measurable, and humane.</p>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((s) => (
+            <article class="rounded-xl bg-white/70 p-6 ring-1 ring-juniper/10 backdrop-blur">
+              <h3 class="font-display text-xl">{s.title}</h3>
+              <p class="mt-2 font-body text-sm">{s.blurb}</p>
+              <a href="/contact" class="mt-4 inline-block underline">
+                Learn more
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <Testimonials />
+    <CaseStudy />
+    <CTA />
+  </main>
+  <Footer />
+
+  <!-- JSON-LD: Services list (Prettier-safe with set:html) -->
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      itemListElement: services.map((s, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: { "@type": "Service", name: s.title, description: s.blurb },
+      })),
+    })}
+  />
+</Base>

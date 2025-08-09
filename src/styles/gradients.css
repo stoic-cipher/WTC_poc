@@ -1,0 +1,14 @@
+:root {
+  --g1: #3c4d4a; /* juniper */
+  --g2: #566057; /* sage */
+  --g3: #b4c3bc; /* sky */
+  --g4: #ccb6a3; /* brain */
+  --g5: #ba9d4c; /* sun */
+}
+.bg-twc-gradient {
+  background:
+    radial-gradient(120% 120% at 10% 10%, var(--g5) 0%, transparent 40%),
+    radial-gradient(120% 120% at 90% 20%, var(--g3) 0%, transparent 45%),
+    radial-gradient(120% 120% at 50% 90%, var(--g4) 0%, transparent 40%),
+    linear-gradient(120deg, var(--g1), var(--g2));
+}

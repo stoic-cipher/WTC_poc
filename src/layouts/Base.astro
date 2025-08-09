@@ -1,0 +1,24 @@
+---
+import "../styles/global.css";
+import SEO from "../components/SEO.astro";
+const { title, description, canonical = "https://example.com" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Brand font (Unbounded) fast + CLS-safe -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="theme-color" content="#3C4D4A" />
+    <SEO title={title} description={description} url={canonical} />
+  </head>
+  <body class="bg-sand text-juniper antialiased">
+    <slot />
+  </body>
+</html>

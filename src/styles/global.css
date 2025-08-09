@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* brand gradient + vars inline so it can't get lost */
+:root {
+  --g1: #3c4d4a; /* juniper */
+  --g2: #566057; /* sage */
+  --g3: #b4c3bc; /* sky */
+  --g4: #ccb6a3; /* brain */
+  --g5: #ba9d4c; /* sun */
+}
+.bg-twc-gradient {
+  background:
+    radial-gradient(120% 120% at 10% 10%, var(--g5) 0%, transparent 40%),
+    radial-gradient(120% 120% at 90% 20%, var(--g3) 0%, transparent 45%),
+    radial-gradient(120% 120% at 50% 90%, var(--g4) 0%, transparent 40%),
+    linear-gradient(120deg, var(--g1), var(--g2));
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  background-color: #f6f2e8;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Focus rings for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--g3);
+  outline-offset: 2px;
+}
+/* Floating brand blobs — perf-friendly */
+.blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.blob {
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  opacity: 0.35;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* brand colors inside each blob */
+.blob--sun {
+  background: radial-gradient(circle at 50% 50%, var(--g5) 0 35%, transparent 60%);
+}
+.blob--sky {
+  background: radial-gradient(circle at 50% 50%, var(--g3) 0 35%, transparent 60%);
+}
+.blob--brain {
+  background: radial-gradient(circle at 50% 50%, var(--g4) 0 35%, transparent 60%);
+}
+
+/* gentle, long, composited-only motion */
+@keyframes floatA {
+  0% {
+    transform: translate3d(-15%, -10%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(10%, -5%, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(-15%, -10%, 0) scale(1);
+  }
+}
+@keyframes floatB {
+  0% {
+    transform: translate3d(20%, 15%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-5%, 10%, 0) scale(0.95);
+  }
+  100% {
+    transform: translate3d(20%, 15%, 0) scale(1);
+  }
+}
+@keyframes floatC {
+  0% {
+    transform: translate3d(-10%, 25%, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(5%, -5%, 0) scale(0.98);
+  }
+  100% {
+    transform: translate3d(-10%, 25%, 0) scale(1.05);
+  }
+}
+
+.blob--sun {
+  animation: floatA 42s ease-in-out infinite;
+}
+.blob--sky {
+  animation: floatB 55s ease-in-out infinite;
+}
+.blob--brain {
+  animation: floatC 68s ease-in-out infinite;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .blob--sun,
+  .blob--sky,
+  .blob--brain {
+    animation: none;
+  }
+}

@@ -1,0 +1,47 @@
+---
+const links = [
+  { href: "/", label: "Home" },
+  { href: "#method", label: "Method" },
+  { href: "#services", label: "Services" },
+  { href: "#testimonials", label: "Testimonials" },
+  { href: "/contact", label: "Contact" },
+];
+---
+
+<header class="fixed inset-x-0 top-0 z-50">
+  <nav
+    class="mx-auto mt-4 flex max-w-6xl items-center justify-between rounded-full bg-white/60 px-6 py-3 ring-1 ring-juniper/10 backdrop-blur"
+  >
+    <a href="/" class="font-display text-lg">The Wholeness Center</a>
+    <button class="md:hidden" id="menuBtn" aria-label="Toggle menu">☰</button>
+    <ul class="hidden items-center gap-6 md:flex">
+      {
+        links.map((l) => (
+          <li>
+            <a class="hover:underline" href={l.href}>
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  <ul
+    id="mobileNav"
+    class="mx-auto mt-2 hidden max-w-6xl rounded-2xl bg-white/90 px-6 py-2 ring-1 ring-juniper/10 backdrop-blur md:hidden"
+  >
+    {
+      links.map((l) => (
+        <li class="border-b border-juniper/10 py-2 last:border-none">
+          <a href={l.href}>{l.label}</a>
+        </li>
+      ))
+    }
+  </ul>
+</header>
+
+<script type="module">
+  const b = document.getElementById("menuBtn");
+  const m = document.getElementById("mobileNav");
+  b?.addEventListener("click", () => m.classList.toggle("hidden"));
+</script>
