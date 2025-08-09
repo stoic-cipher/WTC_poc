@@ -1,9 +1,16 @@
 backend:
-  name: test-repo
+  name: github
+  repo: <your-username>/wtc-poc
+  branch: main
+  base_url: /api/decap
+  auth_endpoint: auth
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
 publish_mode: editorial_workflow
+# public/admin/config.yml
+local_backend:
+  url: http://localhost:8085/api/v1
 
 collections:
   - name: "pages"
@@ -25,6 +32,7 @@ collections:
     fields:
       - { label: "Name", name: "title", widget: "string" }
       - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Order", name: "order", widget: "number", min: 1, step: 1, default: 999 }
       - { label: "Icon", name: "icon", widget: "image", required: false }
 
   - name: "settings"
