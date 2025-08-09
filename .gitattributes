@@ -1,0 +1,2 @@
+.gitattributes* text=auto eol=lf
+              *.{png,jpg,jpeg,gif,webp,avif,ico,pdf,zip,woff,woff2,ttf,otf} binary
