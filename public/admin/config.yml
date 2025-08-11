@@ -1,10 +1,10 @@
-local_backend: true
 backend:
   name: github
   repo: <stoic-cipher>/wtc-poc
   branch: main
   base_url: /api/decap
   auth_endpoint: auth
+local_backend: true
 
 media_folder: "public/uploads"
 public_folder: "/uploads"

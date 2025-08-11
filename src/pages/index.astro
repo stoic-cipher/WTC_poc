@@ -20,81 +20,130 @@ const services = serviceFiles
   .sort((a, b) => a.order - b.order);
 ---
 
-<Base
-  title="The Wholeness Center — Whole Person Care"
-  description="Remember your wildness — return to self."
+<Base title="The Wholeness Center" description="Remember your wildness — return to self.">
+  <section class="bg-sand py-16">
+    <div class="mx-auto max-w-7xl px-4">
+      <Nav />
+      <main class="pt-24">
+        <Hero />
+        <script>
+          const hero = document.getElementById("hero-logo");
+          const target = document.getElementById("bubble-logo-target");
+          if (hero && target) {
+            let ticking = false;
+
+            function lerp(a, b, t) {
+              return a + (b - a) * t;
+            }
+            function update() {
+              ticking = false;
+
+              const hb = hero.getBoundingClientRect();
+              const tb = target.getBoundingClientRect();
+              if (!hb.width || !tb.width) return;
+
+              // centers
+              const hx = hb.left + hb.width / 2,
+                hy = hb.top + hb.height / 2;
+              const tx = tb.left + tb.width / 2,
+                ty = tb.top + tb.height / 2;
+
+              // progress based on how far past the hero you’ve scrolled
+              const start = hero.offsetTop; // tune these 2 lines if needed
+              const end = start + 300; // distance of the “merge” animation
+              const y = window.scrollY;
+              const p = Math.max(0, Math.min(1, (y - start) / (end - start)));
+
+              const scale = tb.width / hb.width;
+              const dx = tx - hx,
+                dy = ty - hy;
+
+              hero.style.transform = `translate(${dx * p}px, ${dy * p}px) scale(${lerp(1, scale, p)})`;
+              hero.style.opacity = String(1 - p);
+            }
+
+            const onScroll = () => {
+              if (!ticking) {
+                requestAnimationFrame(update);
+                ticking = true;
+              }
+            };
+            window.addEventListener("scroll", onScroll, { passive: true });
+            window.addEventListener("resize", () => requestAnimationFrame(update));
+            requestAnimationFrame(update);
+          }
+        </script>
+        <!-- Responsive, optimized images come from PhotoBand (local JPEGs => AVIF/WEBP/JPEG) -->
+        <PhotoBand />
+
+        <!-- Method -->
+        <section id="method" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16">
+          <h2 class="font-display text-3xl md:text-4xl">Our Method</h2>
+          <p class="mt-4 max-w-2xl font-body">
+            Holistic and traditional modalities working together for sustainable healing.
+          </p>
+          <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {
+              services.map((s) => (
+                <article class="rounded-xl bg-white/70 p-6 ring-1 ring-juniper/10 backdrop-blur">
+                  <h3 class="font-display text-xl">{s.title}</h3>
+                  <p class="mt-2 font-body text-sm">{s.blurb}</p>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <!-- Proof stats -->
+        <section class="mx-auto max-w-6xl px-6 py-10">
+          <div class="grid grid-cols-3 gap-6 text-juniper">
+            <StatCounter value={98} label="Mobile Lighthouse score" />
+            <StatCounter value={100} label="Desktop Lighthouse score" />
+            <StatCounter value={50} label="Core Web Vitals ↑" />
+          </div>
+          <p class="sr-only">Metrics are illustrative for the proof of concept.</p>
+        </section>
+
+        <!-- Services -->
+        <section id="services" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16">
+          <h2 class="font-display text-3xl md:text-4xl">Selected Programs</h2>
+          <p class="mt-4 max-w-2xl font-body">
+            Designed to be understandable, measurable, and humane.
+          </p>
+          <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {
+              services.map((s) => (
+                <article class="rounded-xl bg-white/70 p-6 ring-1 ring-juniper/10 backdrop-blur">
+                  <h3 class="font-display text-xl">{s.title}</h3>
+                  <p class="mt-2 font-body text-sm">{s.blurb}</p>
+                  <a href="/contact" class="mt-4 inline-block underline">
+                    Learn more
+                  </a>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <Testimonials />
+        <CaseStudy />
+        <CTA />
+      </main>
+      <Footer />
+
+      <!-- JSON-LD: Services list (Prettier-safe with set:html) -->
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: services.map((s, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: { "@type": "Service", name: s.title, description: s.blurb },
+          })),
+        })}
+      />
+    </div>
+  </section></Base
 >
-  <Nav />
-  <main class="pt-24">
-    <Hero />
-
-    <!-- Responsive, optimized images come from PhotoBand (local JPEGs => AVIF/WEBP/JPEG) -->
-    <PhotoBand />
-
-    <!-- Method -->
-    <section id="method" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16">
-      <h2 class="font-display text-3xl md:text-4xl">Our Method</h2>
-      <p class="mt-4 max-w-2xl font-body">
-        Holistic and traditional modalities working together for sustainable healing.
-      </p>
-      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          services.map((s) => (
-            <article class="rounded-xl bg-white/70 p-6 ring-1 ring-juniper/10 backdrop-blur">
-              <h3 class="font-display text-xl">{s.title}</h3>
-              <p class="mt-2 font-body text-sm">{s.blurb}</p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- Proof stats -->
-    <section class="mx-auto max-w-6xl px-6 py-10">
-      <div class="grid grid-cols-3 gap-6 text-juniper">
-        <StatCounter value={98} label="Mobile Lighthouse score" />
-        <StatCounter value={100} label="Desktop Lighthouse score" />
-        <StatCounter value={50} label="Core Web Vitals ↑" />
-      </div>
-      <p class="sr-only">Metrics are illustrative for the proof of concept.</p>
-    </section>
-
-    <!-- Services -->
-    <section id="services" class="mx-auto max-w-6xl scroll-mt-24 px-6 py-16">
-      <h2 class="font-display text-3xl md:text-4xl">Selected Programs</h2>
-      <p class="mt-4 max-w-2xl font-body">Designed to be understandable, measurable, and humane.</p>
-      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          services.map((s) => (
-            <article class="rounded-xl bg-white/70 p-6 ring-1 ring-juniper/10 backdrop-blur">
-              <h3 class="font-display text-xl">{s.title}</h3>
-              <p class="mt-2 font-body text-sm">{s.blurb}</p>
-              <a href="/contact" class="mt-4 inline-block underline">
-                Learn more
-              </a>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <Testimonials />
-    <CaseStudy />
-    <CTA />
-  </main>
-  <Footer />
-
-  <!-- JSON-LD: Services list (Prettier-safe with set:html) -->
-  <script
-    type="application/ld+json"
-    set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      itemListElement: services.map((s, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        item: { "@type": "Service", name: s.title, description: s.blurb },
-      })),
-    })}
-  />
-</Base>

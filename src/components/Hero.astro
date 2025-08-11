@@ -1,36 +1,119 @@
----
-
----
-
-<section class="bg-twc-gradient relative min-h-[70vh] overflow-hidden bg-juniper text-sand">
-  <div class="blobs" aria-hidden="true">
-    <span class="blob blob--sun" style="left:-10%; top:-10%"></span>
-    <span class="blob blob--sky" style="right:-20%; top:5%"></span>
-    <span class="blob blob--brain" style="left:10%; bottom:-20%"></span>
-  </div>
+<section class="bg-hero-gradient relative min-h-[72vh] overflow-hidden text-sand">
+  <!-- concentric rings -->
   <div class="pointer-events-none absolute inset-0 grid place-items-center">
-    <div class="h-[80vmin] w-[80vmin] rounded-full border border-sand/20"></div>
-    <div class="h-[60vmin] w-[60vmin] rounded-full border border-sand/20"></div>
-    <div class="h-[40vmin] w-[40vmin] rounded-full border border-sand/20"></div>
+    <div class="border-white/12 h-[80vmin] w-[80vmin] rounded-full border"></div>
+    <div class="border-white/12 h-[60vmin] w-[60vmin] rounded-full border"></div>
+    <div class="border-white/12 h-[40vmin] w-[40vmin] rounded-full border"></div>
   </div>
 
-  <div class="relative mx-auto max-w-5xl px-6 py-24">
-    <h1 class="font-display text-5xl leading-tight md:text-6xl">The Wholeness Center</h1>
-    <p class="reveal mt-4 font-tagline text-sm/relaxed uppercase tracking-tracked">
+  <!-- center stack -->
+  <div class="relative mx-auto grid max-w-6xl place-items-center px-6 pb-10 pt-20 text-center">
+    <p class="mt-6 font-tagline text-[12px]/relaxed tracking-[0.5em] opacity-95">
       WHOLE PERSON CARE
     </p>
-    <p class="reveal mt-6 max-w-2xl font-body text-lg">Remember your wildness — return to self.</p>
+    <p class="mt-4 max-w-2xl font-body text-lg opacity-95 md:text-xl">
+      Remember your wildness — return to self.
+    </p>
+    <h1 class="sr-only">The Wholeness Center — Whole Person Care</h1>
+  </div>
+
+  <!-- centered carousel under hero content -->
+  <div class="relative mx-auto mt-4 w-[min(960px,92vw)] px-6">
+    <div class="hero-carousel relative overflow-hidden rounded-2xl border border-white/20">
+      <figure class="slide is-active">
+        <img src="/uploads/front-desk.png" alt="Reception area at The Wholeness Center" />
+        <figcaption class="cap">“Welcome home.”</figcaption>
+      </figure>
+      <figure class="slide">
+        <img src="/uploads/exterior.png" alt="Clinic exterior" />
+        <figcaption class="cap">The Wholeness Center</figcaption>
+      </figure>
+      <figure class="slide">
+        <img src="/uploads/twc-wildness.png" alt="Golden valley landscape" />
+        <figcaption class="cap">Remember your wildness —</figcaption>
+      </figure>
+      <figure class="slide">
+        <img src="/uploads/twc-dusk.png" alt="Night sky above ridge" />
+        <figcaption class="cap">Remember your brilliance —</figcaption>
+      </figure>
+      <figure class="slide">
+        <img src="/uploads/twc-valley.png" alt="Mountain path through flowers" />
+        <figcaption class="cap">Remember your knowing —</figcaption>
+      </figure>
+      <figure class="slide">
+        <img src="/uploads/twc-road.png" alt="Forest road with light shaft" />
+        <figcaption class="cap">RETURN TO SELF</figcaption>
+      </figure>
+
+      <style>
+        .hero-carousel {
+          aspect-ratio: 16/9;
+          background: rgba(0, 0, 0, 0.08);
+        }
+        .hero-carousel .slide {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          transition: opacity 0.8s ease;
+        }
+        .hero-carousel .slide.is-active {
+          opacity: 1;
+        }
+        .hero-carousel img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          filter: contrast(1.05) saturate(1.05);
+        }
+        .hero-carousel .cap {
+          position: absolute;
+          left: 20px;
+          right: 20px;
+          bottom: 14px;
+          color: rgba(255, 255, 255, 0.96);
+          font-size: 1.125rem;
+          text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+        }
+      </style>
+    </div>
+  </div>
+
+  <!-- sentinel watched by the nav (controls icon→wordmark swap) -->
+  <div
+    id="hero-sentinel"
+    data-offset="8"
+    class="pointer-events-none absolute bottom-0 left-0 h-1 w-1 opacity-0"
+    aria-hidden="true"
+  >
   </div>
 </section>
 
-<script type="module">
-  import { animate, stagger } from "motion";
-  window.addEventListener("load", () => {
-    animate(
-      "h1",
-      { opacity: [0, 1], transform: ["translateY(12px)", "translateY(0)"] },
-      { duration: 0.7, easing: "ease-out" },
-    );
-    animate(".reveal", { opacity: [0, 1] }, { delay: stagger(0.15), duration: 0.6 });
+<script>
+  // soft load-in
+  addEventListener("load", () => {
+    const logo = document.getElementById("hero-logo");
+    if (logo)
+      logo.animate(
+        [
+          { opacity: 0, transform: "scale(.96)" },
+          { opacity: 1, transform: "scale(1)" },
+        ],
+        { duration: 500, easing: "ease-out" },
+      );
   });
+
+  // centered carousel rotation
+  (function () {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const root = document.querySelector(".hero-carousel");
+    if (!root) return;
+    const slides = Array.from(root.querySelectorAll(".slide"));
+    if (slides.length < 2) return;
+    let i = 0;
+    setInterval(() => {
+      slides[i].classList.remove("is-active");
+      i = (i + 1) % slides.length;
+      slides[i].classList.add("is-active");
+    }, 4500);
+  })();
 </script>

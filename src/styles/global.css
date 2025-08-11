@@ -3,13 +3,6 @@
 @tailwind utilities;
 
 /* brand gradient + vars inline so it can't get lost */
-:root {
-  --g1: #3c4d4a; /* juniper */
-  --g2: #566057; /* sage */
-  --g3: #b4c3bc; /* sky */
-  --g4: #ccb6a3; /* brain */
-  --g5: #ba9d4c; /* sun */
-}
 .bg-twc-gradient {
   background:
     radial-gradient(120% 120% at 10% 10%, var(--g5) 0%, transparent 40%),
@@ -57,15 +50,6 @@ body {
 }
 
 /* brand colors inside each blob */
-.blob--sun {
-  background: radial-gradient(circle at 50% 50%, var(--g5) 0 35%, transparent 60%);
-}
-.blob--sky {
-  background: radial-gradient(circle at 50% 50%, var(--g3) 0 35%, transparent 60%);
-}
-.blob--brain {
-  background: radial-gradient(circle at 50% 50%, var(--g4) 0 35%, transparent 60%);
-}
 
 /* gentle, long, composited-only motion */
 @keyframes floatA {
@@ -112,11 +96,39 @@ body {
   animation: floatC 68s ease-in-out infinite;
 }
 
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .blob--sun,
-  .blob--sky,
-  .blob--brain {
-    animation: none;
-  }
+.glass{
+  background-color: rgba(255,255,255,.14);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.35),
+          0 20px 40px -22px rgba(0,0,0,.35);
+}
+
+/* Colors tuned to your screenshot */
+:root{
+  --sand: #F6F2E8;
+  --rose: #EACFC8;    /* top-left */
+  --aqua: #C9D6CF;    /* top-right */
+  --gold: #C7A13F;    /* bottom-right */
+  --deep: #233C36;    /* bottom-left */
+}
+
+/* Static hero gradient to match screenshot */
+.bg-hero-gradient{
+  background:
+          radial-gradient(120% 90% at 8% -10%, var(--rose) 0%, rgba(234,207,200,0) 45%),
+          radial-gradient(120% 90% at 102% -10%, var(--aqua) 0%, rgba(201,214,207,0) 45%),
+          radial-gradient(140% 120% at 100% 110%, var(--gold) 0%, rgba(199,161,63,0) 55%),
+          radial-gradient(140% 100% at -10% 110%, var(--deep) 0%, rgba(35,60,54,0) 55%),
+          linear-gradient(180deg, var(--sand), var(--sand));
+}
+
+/* Faster blob motion (if you’re still using blobs elsewhere) */
+.blob--sun   { animation: floatA 18s ease-in-out infinite; }
+.blob--sky   { animation: floatB 26s ease-in-out infinite; }
+.blob--brain { animation: floatC 34s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce){
+  .blob--sun, .blob--sky, .blob--brain { animation: none !important; }
 }

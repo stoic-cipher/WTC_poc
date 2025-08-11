@@ -1,47 +1,179 @@
 ---
+/* If links are already imported, keep that and remove the fallback. */
 const links = [
   { href: "/", label: "Home" },
-  { href: "#method", label: "Method" },
-  { href: "#services", label: "Services" },
-  { href: "#testimonials", label: "Testimonials" },
+  { href: "/method", label: "Method" },
+  { href: "/services", label: "Services" },
+  { href: "/testimonials", label: "Testimonials" },
   { href: "/contact", label: "Contact" },
 ];
 ---
 
-<header class="fixed inset-x-0 top-0 z-50">
-  <nav
-    class="mx-auto mt-4 flex max-w-6xl items-center justify-between rounded-full bg-white/60 px-6 py-3 ring-1 ring-juniper/10 backdrop-blur"
-  >
-    <a href="/" class="font-display text-lg">The Wholeness Center</a>
-    <button class="md:hidden" id="menuBtn" aria-label="Toggle menu">☰</button>
-    <ul class="hidden items-center gap-6 md:flex">
-      {
-        links.map((l) => (
-          <li>
-            <a class="hover:underline" href={l.href}>
-              {l.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </nav>
-  <ul
-    id="mobileNav"
-    class="mx-auto mt-2 hidden max-w-6xl rounded-2xl bg-white/90 px-6 py-2 ring-1 ring-juniper/10 backdrop-blur md:hidden"
-  >
+<nav
+  id="nav-bubble"
+  class="glass sticky top-4 z-50 mx-auto flex max-w-6xl items-center justify-between rounded-full px-6 py-3.5 md:px-8 md:py-4"
+  data-words="false"
+  data-opaque="false"
+>
+  <!-- LEFT: icon → wordmark after hero -->
+  <a href="/" class="inline-flex items-center" aria-label="The Wholeness Center">
+    <div class="relative h-8 w-[180px] sm:w-[220px] md:w-[280px]">
+      <!-- wordmark (hidden at top) -->
+      <img
+        src="/brand/logos/twc-primary-juniper.svg"
+        alt=""
+        class="logo-full absolute inset-0 h-8 w-auto opacity-0"
+      />
+      <!-- icon (visible at top) -->
+      <img
+        id="bubble-logo-target"
+        src="/brand/logos/twc-icon-juniper.svg"
+        alt=""
+        class="logo-icon absolute inset-0 h-8 w-auto"
+      />
+    </div>
+    <span class="sr-only">The Wholeness Center</span>
+  </a>
+
+  <!-- RIGHT: links -->
+  <button class="md:hidden" id="menuBtn" aria-label="Toggle menu">☰</button>
+  <ul class="hidden items-center gap-8 text-lg md:flex">
     {
       links.map((l) => (
-        <li class="border-b border-juniper/10 py-2 last:border-none">
-          <a href={l.href}>{l.label}</a>
+        <li>
+          <a class="hover:opacity-80" href={l.href}>
+            {l.label}
+          </a>
         </li>
       ))
     }
   </ul>
-</header>
 
-<script type="module">
-  const b = document.getElementById("menuBtn");
-  const m = document.getElementById("mobileNav");
-  b?.addEventListener("click", () => m.classList.toggle("hidden"));
-</script>
+  <style>
+    /* cross-fade icon ↔ wordmark */
+    #nav-bubble .logo-full,
+    #nav-bubble .logo-icon {
+      transition:
+        opacity 0.28s ease,
+        transform 0.28s ease;
+    }
+    #nav-bubble[data-words="true"] .logo-full {
+      opacity: 1;
+      transform: none;
+    }
+    #nav-bubble[data-words="true"] .logo-icon {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+
+    /* fade glass when scrolling up / near top */
+    /* override .glass with CSS vars so we can adjust alpha dynamically */
+    #nav-bubble {
+      --glass-alpha: 0.18; /* opaque-ish when scrolling down */
+      --border-alpha: 0.24;
+      background-color: rgba(255, 255, 255, var(--glass-alpha));
+      border-color: rgba(255, 255, 255, var(--border-alpha));
+      transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease;
+      position: relative;
+    }
+    #nav-bubble[data-opaque="false"] {
+      --glass-alpha: 0.08; /* more transparent when scrolling up / near top */
+      --border-alpha: 0.14;
+    }
+    #nav-bubble::before {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 9999px;
+      pointer-events: none;
+      border: 2px solid hsl(var(--ring-hue, 170) 25% 30% / 0.55);
+      transition: border-color 0.2s ease;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #nav-bubble .logo-full,
+      #nav-bubble .logo-icon {
+        transition: none;
+      }
+      #nav-bubble,
+      #nav-bubble::before {
+        transition: none;
+      }
+    }
+  </style>
+
+  <script>
+    const nav = document.getElementById("nav-bubble");
+    const isHome = location.pathname === "/";
+
+    /*** 1) Icon → wordmark after the hero ***/
+    function makeObserver() {
+      const sentinel = document.getElementById("hero-sentinel");
+      if (!sentinel) return null;
+      const extra = parseInt(sentinel.dataset.offset || "0", 10);
+      const navHeight = nav.offsetHeight || 64;
+      const topCushion = 4; // matches sticky top-4
+      const marginTop = -(navHeight + topCushion + extra);
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          nav.setAttribute("data-words", entry.isIntersecting ? "false" : "true");
+        },
+        { rootMargin: `${marginTop}px 0px 0px 0px`, threshold: 0 },
+      );
+      io.observe(sentinel);
+      return io;
+    }
+
+    /*** 2) Fade glass when scrolling up / near top ***/
+    let lastY = scrollY;
+    function onScrollDir() {
+      const y = scrollY;
+      const goingDown = y > lastY + 4;
+      const nearTop = y < 8;
+      nav.setAttribute("data-opaque", goingDown && !nearTop ? "true" : "false");
+      lastY = y;
+      // ring hue drift (optional)
+      document.documentElement.style.setProperty(
+        "--ring-hue",
+        String(170 + 80 * Math.min(1, y / 600)),
+      );
+    }
+
+    function setup() {
+      if (!isHome) {
+        nav.setAttribute("data-words", "true"); // non-home shows wordmark immediately
+      } else {
+        let io = makeObserver();
+        const ro = new ResizeObserver(() => {
+          io && io.disconnect();
+          io = makeObserver();
+        });
+        ro.observe(nav);
+        addEventListener(
+          "load",
+          () => {
+            io && io.disconnect();
+            io = makeObserver();
+          },
+          { once: true },
+        );
+      }
+      onScrollDir();
+      addEventListener("scroll", onScrollDir, { passive: true });
+      addEventListener(
+        "pointermove",
+        (e) => {
+          document.documentElement.style.setProperty(
+            "--ring-hue",
+            String(170 + 80 * (e.clientX / innerWidth)),
+          );
+        },
+        { passive: true },
+      );
+    }
+    if (document.readyState === "loading")
+      document.addEventListener("DOMContentLoaded", setup, { once: true });
+    else setup();
+  </script>
+</nav>

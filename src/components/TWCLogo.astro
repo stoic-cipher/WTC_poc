@@ -1,0 +1,12 @@
+---
+const {
+  variant = "primary", // "primary" | "icon"
+  width = 280,
+  alt = "The Wholeness Center",
+} = Astro.props;
+
+const file =
+  variant === "icon" ? "/brand/logos/twc-icon-juniper.svg" : "/brand/logos/twc-primary-juniper.svg";
+---
+
+<img src={file} alt={alt} width={width} height="auto" decoding="async" />

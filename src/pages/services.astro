@@ -1,0 +1,33 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Services" description="Programs and services at The Wholeness Center.">
+  <section class="relative overflow-hidden text-juniper">
+    <img
+      src="/uploads/twc-brand-b.png"
+      alt=""
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div class="relative mx-auto max-w-4xl px-6 py-24">
+      <h1 class="font-display text-4xl md:text-5xl">Services</h1>
+      <p class="mt-4 max-w-2xl text-lg opacity-80">
+        Outpatient programs, psychiatric care, nutrition & wellness.
+      </p>
+    </div>
+  </section>
+  <section class="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-6 py-16 md:grid-cols-3">
+    <article class="rounded-xl border border-juniper/15 p-6">
+      <h3 class="font-display text-2xl">Psychiatry</h3>
+      <p class="opacity-80">Evaluation, medication management, integrative modalities.</p>
+    </article>
+    <article class="rounded-xl border border-juniper/15 p-6">
+      <h3 class="font-display text-2xl">Therapy</h3>
+      <p class="opacity-80">Individual, family, group; trauma‑informed and skills‑based.</p>
+    </article>
+    <article class="rounded-xl border border-juniper/15 p-6">
+      <h3 class="font-display text-2xl">Nutrition & Wellness</h3>
+      <p class="opacity-80">Lifestyle, movement, and community supports.</p>
+    </article>
+  </section>
+</Base>

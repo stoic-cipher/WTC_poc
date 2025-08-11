@@ -1,0 +1,131 @@
+---
+/* Sticky header that swaps wordmark → icon after scrolling */
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 border-b border-juniper/10 bg-sand/80 backdrop-blur"
+  data-compact="false"
+>
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4">
+    <a href="/" class="relative inline-flex items-center" aria-label="The Wholeness Center">
+      <div class="relative h-10 w-auto">
+        <!-- wordmark (shown at top) -->
+        <img
+          src="/brand/logos/twc-primary-juniper.svg"
+          alt=""
+          class="logo logo-full block h-10 w-auto"
+          fetchpriority="high"
+        />
+        <!-- icon (shown after scroll) -->
+        <img
+          src="/brand/logos/twc-icon-juniper.svg"
+          alt=""
+          class="logo logo-icon absolute left-0 top-0 h-10 w-auto"
+        />
+      </div>
+      <span class="sr-only">The Wholeness Center</span>
+    </a>
+
+    <!-- nav -->
+    <!-- Glass “bubble” nav -->
+    <div
+      id="nav-bubble"
+      class="/* ← make bubble bigger here */ mx-auto flex max-w-7xl items-center justify-between gap-6 rounded-full border border-juniper/10 bg-white/70 px-6 py-4 shadow-sm backdrop-blur md:px-8 md:py-5"
+    >
+      <!-- LEFT: logo that swaps (wordmark → icon on scroll) -->
+      <a href="/" class="inline-flex items-center" aria-label="The Wholeness Center">
+        <div class="relative h-8 w-[280px] md:w-[320px]">
+          <img
+            src="/brand/logos/twc-primary-juniper.svg"
+            alt=""
+            class="logo-full absolute inset-0 h-8 w-auto"
+            fetchpriority="high"
+          />
+          <img
+            src="/brand/logos/twc-icon-juniper.svg"
+            alt=""
+            class="logo-icon absolute inset-0 h-8 w-auto opacity-0"
+          />
+        </div>
+        <span class="sr-only">The Wholeness Center</span>
+      </a>
+
+      <!-- RIGHT: your links (your snippet goes here unchanged) -->
+      <nav class="hidden items-center gap-8 text-lg md:flex">
+        <a href="/" class="hover:opacity-80">Home</a>
+        <a href="/method" class="hover:opacity-80">Method</a>
+        <a href="/services" class="hover:opacity-80">Services</a>
+        <a href="/testimonials" class="hover:opacity-80">Testimonials</a>
+        <a href="/contact" class="hover:opacity-80">Contact</a>
+      </nav>
+    </div>
+
+    <!-- Keep these at the bottom of the SAME component -->
+    <style>
+      #nav-bubble .logo-full,
+      #nav-bubble .logo-icon {
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+      }
+      #nav-bubble .logo-icon {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+      #nav-bubble[data-compact="true"] .logo-full {
+        opacity: 0;
+        transform: scale(0.98) translateY(-1px);
+      }
+      #nav-bubble[data-compact="true"] .logo-icon {
+        opacity: 1;
+        transform: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #nav-bubble .logo-full,
+        #nav-bubble .logo-icon {
+          transition: none;
+        }
+      }
+    </style>
+    <script>
+      const nav = document.getElementById("nav-bubble");
+      const onScroll = () =>
+        nav && nav.setAttribute("data-compact", window.scrollY > 24 ? "true" : "false");
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    </script>
+    <script>
+      const header = document.getElementById("site-header");
+      const onScroll = () => header.toggleAttribute("data-compact", window.scrollY > 24);
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    </script>
+
+    <style>
+      .logo {
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+      }
+      .logo-icon {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+      header[data-compact] .logo-full {
+        opacity: 0;
+        transform: scale(0.98) translateY(-1px);
+      }
+      header[data-compact] .logo-icon {
+        opacity: 1;
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .logo {
+          transition: none;
+        }
+      }
+    </style>
+  </div>
+</header>
